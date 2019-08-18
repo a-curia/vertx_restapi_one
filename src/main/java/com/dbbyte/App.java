@@ -75,7 +75,10 @@ public class App
             response.putHeader("content-type","text/plain");
             response.end("message back for GET path " +paramName);
         });
-        Route handlerPOST = router.post("/dopost").handler(routingContext -> {
+        Route handlerPOST = router
+                .post("/dopost")
+                .consumes("application/json")
+                .handler(routingContext -> {
             HttpServerResponse response = routingContext.response();
             response.putHeader("content-type","text/plain");
             response.end("message back for POST path");
