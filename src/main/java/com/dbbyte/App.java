@@ -1,11 +1,14 @@
 package com.dbbyte;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import sun.security.provider.certpath.Vertex;
+
+import java.lang.invoke.MethodType;
 
 /**
  * Hello world!
@@ -60,7 +63,26 @@ public class App
             response.end("End Response");
         });
 
+        // specific HTTP method
+        Route handlerGET = router.get("/doget").handler(routingContext -> {
+            HttpServerResponse response = routingContext.response();
+            response.putHeader("content-type","text/plain");
+            response.end("message back for GET path");
+        });
+        Route handlerGETParam = router.get("/doget/:name").handler(routingContext -> {
+            String paramName = routingContext.request().getParam("name");
+            HttpServerResponse response = routingContext.response();
+            response.putHeader("content-type","text/plain");
+            response.end("message back for GET path " +paramName);
+        });
+        Route handlerPOST = router.post("/dopost").handler(routingContext -> {
+            HttpServerResponse response = routingContext.response();
+            response.putHeader("content-type","text/plain");
+            response.end("message back for POST path");
+        });
 
+        // Restic to specific methos
+//        Router router = Router.router(vertx).route().method(HttpMethod.GET);
 
         // set the port to listen to
         httpServer.requestHandler(router).listen(9090);
